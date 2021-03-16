@@ -1,12 +1,32 @@
+const User = require('../models/user');
+const bcryptjs = require('bcryptjs');
+
 const usersGet = (req, res) => {
     res.status(403).json({
         msg: 'get API - Controller'
     });
 }
 
-const usersPost = (req, res) => {
+const usersPost = async(req, res) => {
+
+    const { name, email, password, rol } = req.body;
+    const user = new User({ name, email, password, rol });
+
+    const validateEmail = await User.findOne({ email });
+    if (validateEmail) {
+        return res.status(400).json({
+            msg: 'El correo ya esta registrado'
+        });
+    }
+
+    const salt = bcryptjs.genSaltSync();
+    user.password = bcryptjs.hashSync( password, salt );
+
+    await user.save();
+
     res.status(201).json({
-        msg: 'post API - Controller'
+        msg: 'post API - Controller',
+        user
     });
 }
 
