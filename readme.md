@@ -1,4 +1,3 @@
 # WebServer + RestServer
 
-Instalar las dependencias 
-``` npm install ```
+Recuerden que deben de ejecutar ```npm install``` para reconstruir los módulos de Node.
